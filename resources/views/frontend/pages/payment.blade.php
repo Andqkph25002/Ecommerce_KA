@@ -8,8 +8,8 @@
 
 @section('content')
     <!--============================
-                BREADCRUMB START
-            ==============================-->
+                    BREADCRUMB START
+                ==============================-->
     <section id="wsus__breadcrumb">
         <div class="wsus_breadcrumb_overlay">
             <div class="container">
@@ -26,12 +26,12 @@
         </div>
     </section>
     <!--============================
-                BREADCRUMB END
-            ==============================-->
+                    BREADCRUMB END
+                ==============================-->
 
     <!--============================
-                PAYMENT PAGE START
-            ==============================-->
+                    PAYMENT PAGE START
+                ==============================-->
     <section id="wsus__cart_view">
         <div class="container">
             <div class="wsus__pay_info_area">
@@ -40,9 +40,7 @@
                         <div class="wsus__payment_menu" id="sticky_sidebar">
                             <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist"
                                 aria-orientation="vertical">
-                                {{-- <button class="nav-link common_btn active" id="v-pills-home-tab" data-bs-toggle="pill"
-                                    data-bs-target="#v-pills-home" type="button" role="tab" aria-controls="v-pills-home"
-                                    aria-selected="true">card payment</button> --}}
+                              
 
                                 <button class="nav-link common_btn active" id="v-pills-home-tab" data-bs-toggle="pill"
                                     data-bs-target="#v-pills-paypal" type="button" role="tab"
@@ -64,7 +62,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-xl-5 col-lg-5">
+@if (getCartTotal() > 0)
+    <div class="col-xl-5 col-lg-5">
                         <div class="tab-content" id="v-pills-tabContent" id="sticky_sidebar">
 
 
@@ -73,7 +72,8 @@
                                 <div class="row">
                                     <div class="col-xl-12 m-auto">
                                         <div class="wsus__payment_area">
-                                            <a class="nav-link common_btn text-center" href="{{ route('user.paypal.payment') }}">Pay with Paypal</a>
+                                            <a class="nav-link common_btn text-center"
+                                                href="{{ route('user.paypal.payment') }}">Pay with Paypal</a>
                                         </div>
                                     </div>
                                 </div>
@@ -89,6 +89,13 @@
 
                         </div>
                     </div>
+
+@else
+    <p>Lỗi đơn hàng</p>
+@endif
+
+                    
+
                     <div class="col-xl-4 col-lg-4">
                         <div class="wsus__pay_booking_summary" id="sticky_sidebar2">
                             <h5>Order Summary</h5>
@@ -103,6 +110,6 @@
         </div>
     </section>
     <!--============================
-                PAYMENT PAGE END
-            ==============================-->
+                    PAYMENT PAGE END
+                ==============================-->
 @endsection

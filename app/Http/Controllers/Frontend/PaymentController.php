@@ -150,6 +150,41 @@ class PaymentController extends Controller
                 ]
             ]
         ]);
+        if(isset($response['id']) && $response['id'] != null){
+            foreach($response['links'] as $link){
+                if($link['rel'] === 'approve'){
+                    return redirect()->away($link['href']);
+                }
+            }
+        } else {
+            return redirect()->route('user.paypal.cancel');
+        }
+    }
+
+    public function paypalSuccess(Request $request)
+    {
+        $config = $this->paypalConfig();
+        $provider = new PayPalClient($config);
+        $provider->getAccessToken();
+
+        $response = $provider->capturePaymentOrder($request->token);
+
+        if (isset($response['status']) && $response['status'] == 'COMPLETED') {
+
+            // calculate payable amount depending on currency rate
+            $paypalSetting = PaypalSetting::first();
+            $total = getFinalPayableAmount();
+            $paidAmount = round($total*$paypalSetting->currency_rate, 2);
+
+            $this->storeOrder('paypal', 1, $response['id'], $paidAmount, $paypalSetting->currency_name);
+
+            // clear session
+            $this->clearSession();
+
+            return redirect()->route('user.payment.success');
+        }
+
+        return redirect()->route('user.paypal.cancel');
     }
 
     public function payWithStripe(Request $request)
